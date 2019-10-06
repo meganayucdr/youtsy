@@ -6,11 +6,11 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Smartisan\Filters\Traits\Filterable;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use Notifiable;
-    use Filterable;
+    use Notifiable, Filterable, HasApiTokens;
 
     /** @var string Filter Class */
     protected $filters = 'App\Filters\UserFilter';

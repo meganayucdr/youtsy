@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c903f45611ab9120cf5bd955ffc08ffd",
+    "content-hash": "fcc9a03b530cbe27fe8d7bbc52a74219",
     "packages": [
         {
             "name": "atnic/eloquent-filters",
