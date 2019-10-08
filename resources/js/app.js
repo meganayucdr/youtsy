@@ -5,6 +5,13 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+import BootstrapVue from 'bootstrap-vue'
+import Vue from 'vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+
 require('./bootstrap');
 
 window.Vue = require('vue');
@@ -21,6 +28,29 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+
+Vue.component(
+    'passport-clients',
+    require('./components/passport/Clients.vue').default
+);
+
+Vue.component(
+    'passport-authorized-clients',
+    require('./components/passport/AuthorizedClients.vue').default
+);
+
+Vue.component(
+    'passport-personal-access-tokens',
+    require('./components/passport/PersonalAccessTokens.vue').default
+);
+
+Vue.component(
+    'role-component',
+    require('./components/roles/RoleComponent.vue').default
+);
+
+Vue.use(BootstrapVue);
+Vue.use(VueAxios, axios);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
