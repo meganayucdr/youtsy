@@ -7,8 +7,7 @@
 
 import BootstrapVue from 'bootstrap-vue'
 import Vue from 'vue'
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+import Vuetify from 'vuetify/lib'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 
@@ -49,9 +48,13 @@ Vue.component(
     require('./components/roles/RoleComponent.vue').default
 );
 
-Vue.use(BootstrapVue);
-Vue.use(VueAxios, axios);
 
+Vue.use(VueAxios, axios);
+Vue.use(Vuetify);
+
+axios.defaults.baseURL = 'http://youtsy.wew/api';
+axios.defaults.headers.common['Authorization'] = "Bearer " +
+    VueCookie.get('api_token');
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
