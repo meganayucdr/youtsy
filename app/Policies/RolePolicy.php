@@ -21,7 +21,7 @@ class RolePolicy
      */
     public function index(User $user)
     {
-        return true; // TODO: Change as needed, but leave it true if no policy
+        return $user->role_id == 2; // TODO: Change as needed, but leave it true if no policy
     }
 
     /**
@@ -33,7 +33,7 @@ class RolePolicy
      */
     public function view(User $user, Role $role)
     {
-        return true; // TODO: Change as needed, but leave it true if no policy
+        return $user->role_id == 2; // TODO: Change as needed, but leave it true if no policy
     }
 
     /**
@@ -44,7 +44,7 @@ class RolePolicy
      */
     public function create(User $user)
     {
-        return true; // TODO: Change as needed, but leave it true if no policy
+        return $user->role_id == 2; // TODO: Change as needed, but leave it true if no policy
     }
 
     /**
@@ -56,7 +56,7 @@ class RolePolicy
      */
     public function update(User $user, Role $role)
     {
-        return true; // TODO: Change as needed, but leave it true if no policy
+        return $user->role_id == 2; // TODO: Change as needed, but leave it true if no policy
     }
 
     /**
@@ -68,7 +68,7 @@ class RolePolicy
      */
     public function delete(User $user, Role $role)
     {
-        return true; // TODO: Change as needed, but leave it true if no policy
+        return $user->role_id == 2; // TODO: Change as needed, but leave it true if no policy
     }
 
 }

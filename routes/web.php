@@ -23,3 +23,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('role/users', 'Role\UserController', [ 'as' => 'role' ]);
 Route::resource('roles.users', 'Role\UserController');
+Route::resource('holland_codes', 'HollandCodeController');
+Route::resource('careers', 'CareerController');
