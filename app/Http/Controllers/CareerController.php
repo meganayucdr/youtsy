@@ -67,7 +67,8 @@ class CareerController extends Controller
     public function create()
     {
         $this->authorize('create', 'App\Career');
-        return view('careers/create');
+        $holland_codes = HollandCode::all();
+        return view('careers/create', ['holland_codes' => $holland_code]);
     }
 
     /**
@@ -81,7 +82,16 @@ class CareerController extends Controller
     {
         $this->authorize('create', 'App\Career');
         $request->validate(self::rules($request)['store']);
+        
+        $career = new Career; 
 
+        $career->name = $request->name; 
+        $career->save();
+
+        $holland_code = HollandCode::find($request->holland_codes); 
+        $career->holland_codes()->attach($holland_code); 
+
+        return 'Success'; 
     }
 
     /**

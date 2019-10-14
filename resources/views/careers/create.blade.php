@@ -5,15 +5,21 @@
 @section('content')
     <div class="row">
         <div class="col-md-8 col-md-offset-2 offset-md-2">
-            <form action="https://youtsy.wew/roles" method="POST" class="form">
+            <form action="/careers" method="POST" class="form">
+                {{ csrf_field() }}
                 <input type="hidden" name="_token">
                 <div class="panel panel-default card"><div class="panel-heading card-header">
                         <span class="panel-title">Create Role</span>
                     </div>
                     <div class="panel-body card-body">
                         <div class="form-group">
-                            <label for="role" class="control-label"></label>
-                            <input id="role" type="text" title="Role" name="role" value="" required="required" class="form-control ">
+                            <label for="career" class="control-label">Career</label>
+                            <input id="name" type="text" title="Career Name" name="name" value="" required="required" class="form-control ">
+                            <select class="custom-select" multiple id="holland_code">
+                                @foreach($holland_codes as $holland_code)
+                                    <option value="{{ $holland_code->id }}" {{ $selectedCode  }} >{{ $holland_code->code }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="panel-footer card-footer clearfix">
