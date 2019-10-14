@@ -15,11 +15,11 @@
                         <div class="form-group">
                             <label for="career" class="control-label">Career</label>
                             <input id="name" type="text" title="Career Name" name="name" value="" required="required" class="form-control ">
-                            <select class="custom-select" multiple id="holland_code">
-                                @foreach($holland_codes as $holland_code)
-                                    <option value="{{ $holland_code->id }}" {{ $selectedCode  }} >{{ $holland_code->code }}</option>
-                                @endforeach
-                            </select>
+                            {!! Form::select('holland_codes[]',
+                                $holland_codes,
+                                null,
+                                ['class' => 'form-control',
+                                'multiple' => 'multiple']) !!}
                         </div>
                     </div>
                     <div class="panel-footer card-footer clearfix">

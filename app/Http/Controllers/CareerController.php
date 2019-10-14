@@ -68,7 +68,7 @@ class CareerController extends Controller
     {
         $this->authorize('create', 'App\Career');
         $holland_codes = HollandCode::all();
-        return view('careers/create', ['holland_codes' => $holland_code]);
+        return view('careers/create', ['holland_codes' => $holland_codes]);
     }
 
     /**
