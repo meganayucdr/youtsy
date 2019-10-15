@@ -5,7 +5,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-8 col-md-offset-2 offset-md-2">
-            <form action="/careers" method="POST" class="form">
+            {!! Form::open(['route' => 'careers.store']) !!}
                 {{ csrf_field() }}
                 <input type="hidden" name="_token">
                 <div class="panel panel-default card"><div class="panel-heading card-header">
@@ -13,8 +13,11 @@
                     </div>
                     <div class="panel-body card-body">
                         <div class="form-group">
-                            <label for="career" class="control-label">Career</label>
-                            <input id="name" type="text" title="Career Name" name="name" value="" required="required" class="form-control ">
+                            {!! Form::label('career', 'Career Name') !!}
+                            {!! Form::text('career_name', '', ['class' => 'form-control mb-2', 'required' => 'required']) !!}
+                        </div>
+                        <div class="form-group">
+                            {!! Form::label('holland_code', 'Holland Code') !!}
                             {!! Form::select('holland_codes[]',
                                 $holland_codes,
                                 null,
@@ -27,6 +30,7 @@
                             <button type="submit" name="redirect" value="https://youtsy.wew/roles?" class="btn btn-primary">
                                 Store
                             </button>
+
                             <button type="submit" name="redirect" value="https://youtsy.wew/roles/create?redirect=https%3A%2F%2Fyoutsy.wew%2Froles%3F" class="btn btn-primary">
                                 Store &amp; Create
                             </button>
@@ -34,7 +38,7 @@
                         <a href="https://youtsy.wew/roles?" class="btn btn-default btn-secondary">Back</a>
                     </div>
                 </div>
-            </form>
+            {!! Form::close() !!}
         </div>
     </div>
 @endsection
