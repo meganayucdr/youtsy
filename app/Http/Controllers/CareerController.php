@@ -81,17 +81,14 @@ class CareerController extends Controller
     public function store(Request $request)
     {
         $this->authorize('create', 'App\Career');
-        $request->validate(self::rules($request)['store']);
         
         $career = new Career; 
 
-        $career->name = $request->name; 
+        $career->name = $request->career_name;
+
         $career->save();
-
-        $holland_code = HollandCode::find($request->holland_codes); 
-        $career->holland_codes()->attach($holland_code); 
-
-        return 'Success'; 
+        $career->hollandCodes()->attach($request->holland_codes);
+        return redirect()->route('careers.index');
     }
 
     /**

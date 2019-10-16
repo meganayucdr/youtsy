@@ -5,10 +5,9 @@
 @section('content')
     <div class="row">
         <div class="col-md-8 col-md-offset-2 offset-md-2">
-            {!! Form::open(['route' => 'careers.store']) !!}
-                {{ csrf_field() }}
-                <input type="hidden" name="_token">
-                <div class="panel panel-default card"><div class="panel-heading card-header">
+            {!! Form::open(['url' => 'careers', 'method' => 'post']) !!}
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            <div class="panel panel-default card"><div class="panel-heading card-header">
                         <span class="panel-title">Create Role</span>
                     </div>
                     <div class="panel-body card-body">
@@ -27,15 +26,12 @@
                     </div>
                     <div class="panel-footer card-footer clearfix">
                         <div class="pull-right float-right">
-                            <button type="submit" name="redirect" value="https://youtsy.wew/roles?" class="btn btn-primary">
-                                Store
-                            </button>
-
-                            <button type="submit" name="redirect" value="https://youtsy.wew/roles/create?redirect=https%3A%2F%2Fyoutsy.wew%2Froles%3F" class="btn btn-primary">
+                            {!! Form::submit('Store', ['class' => 'btn btn-primary']) !!}
+                            <button type="submit" name="redirect" value="https://youtsy.wew/careers/create" class="btn btn-primary">
                                 Store &amp; Create
                             </button>
                         </div>
-                        <a href="https://youtsy.wew/roles?" class="btn btn-default btn-secondary">Back</a>
+                        <a href="https://youtsy.wew/careers?" class="btn btn-default btn-secondary">Back</a>
                     </div>
                 </div>
             {!! Form::close() !!}

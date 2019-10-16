@@ -43,6 +43,6 @@ class Career extends Model
 
     // TODO: Define other default value and relations
     public function hollandCodes()   {
-        $this->belongsToMany('App\HollandCode');
+        return $this->belongsToMany('App\HollandCode', 'career_holland_code');
     }
 }
