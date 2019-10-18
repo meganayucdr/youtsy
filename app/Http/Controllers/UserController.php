@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Role;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -45,7 +46,7 @@ class UserController extends Controller
                     //[ 'name' => 'parent', 'label' => ucwords(__('users.parent')), 'column' => 'name' ], // Only support belongsTo, hasOne
                     [ 'name' => 'name', 'label' => ucwords(__('users.name')) ],
                     [ 'name' => 'email', 'label' => ucwords(__('users.email')) ],
-                    [ 'name' => 'role', 'label' => ucwords(__('users.role')), 'column' => 'role' ],
+                    [ 'name' => 'role', 'label' => ucwords(__('users.role')), 'column' => 'role_id' ],
                 ]
             ],
             'show' => [
@@ -53,7 +54,7 @@ class UserController extends Controller
                     //[ 'name' => 'parent', 'label' => ucwords(__('users.parent')), 'column' => 'name' ], // Only support belongsTo, hasOne
                     [ 'name' => 'name', 'label' => ucwords(__('users.name')) ],
                     [ 'name' => 'email', 'label' => ucwords(__('users.email')) ],
-                    [ 'name' => 'email', 'label' => ucwords(__('users.email')), 'column' => 'role' ],
+                    [ 'name' => 'role', 'label' => ucwords(__('users.role')), 'column' => 'role_id' ],
                 ]
             ]
         ];
@@ -185,6 +186,10 @@ class UserController extends Controller
                 $user->{$key} = $request->{$key};
             }
         }
+
+        $role = Role::find($request->role_id);
+        $user->role()->associate($role);
+
         $user->save();
 
         if (request()->filled('redirect') && starts_with(request()->redirect, request()->root()))
@@ -255,6 +260,10 @@ class UserController extends Controller
                 $user->{$key} = $request->{$key};
             }
         }
+
+        $role = Role::find($request->role_id);
+        $user->role()->associate($role);
+
         $user->save();
 
         if (request()->filled('redirect') && starts_with(request()->redirect, request()->root()))
