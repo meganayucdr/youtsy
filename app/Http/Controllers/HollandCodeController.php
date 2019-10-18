@@ -20,9 +20,10 @@ class HollandCodeController extends Controller
     {
         return [
             'holland_code' => [
-                'belongsToMany' => [], // also for morphToMany
+                'belongsToMany' => [
+                    [ 'name' => 'careers', 'label' => ucwords(__('holland_codes.careers')) ],
+                ], // also for morphToMany
                 'hasMany' => [
-                    [ 'name' => 'career', 'label' => ucwords(__('holland_codes.careers')) ],
                 ], // also for morphMany, hasManyThrough
                 'hasOne' => [
                     //[ 'name' => 'child', 'label' => ucwords(__('holland_codes.child')) ],

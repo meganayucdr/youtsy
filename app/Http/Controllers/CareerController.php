@@ -5,13 +5,93 @@ namespace App\Http\Controllers;
 use App\Career;
 use App\HollandCode;
 use Illuminate\Http\Request;
-use App\Fields\Select2Ajax;
 
 /**
  * CareerController
  */
 class CareerController extends Controller
 {
+    /**
+     * Relations
+     * @param  \Illuminate\Http\Request|null $request
+     * @param Career $career
+     * @return array
+     */
+    public static function relations(Request $request = null, Career $career = null)
+    {
+        return [
+            'career' => [
+                'belongsToMany' => [
+                    [ 'name' => 'hollandCodes', 'label' => ucwords(__('careers.holland_codes'))  ]
+                ], // also for morphToMany
+                'hasMany' => [
+                    //[ 'name' => 'children', 'label' => ucwords(__('careers.children')) ],
+                ], // also for morphMany, hasManyThrough
+                'hasOne' => [
+                    //[ 'name' => 'child', 'label' => ucwords(__('careers.child')) ],
+                ], // also for morphOne
+            ]
+        ];
+    }
+
+    /**
+     * Visibles
+     * @param  \Illuminate\Http\Request|null $request
+     * @param Career $career
+     * @return array
+     */
+    public static function visibles(Request $request = null, Career $career = null)
+    {
+        return [
+            'index' => [
+                'career' => [
+                    //[ 'name' => 'parent', 'label' => ucwords(__('careers.parent')), 'column' => 'name' ], // Only support belongsTo, hasOne
+                    [ 'name' => 'name', 'label' => ucwords(__('careers.name')) ],
+                ]
+            ],
+            'show' => [
+                'career' => [
+                    //[ 'name' => 'parent', 'label' => ucwords(__('careers.parent')), 'column' => 'name' ], // Only support belongsTo, hasOne
+                    [ 'name' => 'name', 'label' => ucwords(__('careers.name')) ],
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * Fields
+     * @param  \Illuminate\Http\Request|null $request
+     * @param Career $career
+     * @return array
+     */
+    public static function fields(Request $request = null, Career $career = null)
+    {
+        return [
+            'create' => [
+                'career' => [
+                    //[ 'field' => 'select', 'name' => 'parent_id', 'label' => ucwords(__('careers.parent')), 'required' => true, 'options' => \App\Parent::filter()->get()->map(function ($parent) {
+                    //    return [ 'value' => $parent->id, 'text' => $parent->name ];
+                    //})->prepend([ 'value' => '', 'text' => '-' ])->toArray() ],
+                    [ 'field' => 'input', 'type' => 'text', 'name' => 'name', 'label' => ucwords(__('careers.name')), 'required' => true ],
+                    [ 'field' => 'select', 'multiple' => 'multiple', 'name' => 'holland_code_id', 'label' => ucwords(__('careers.holland_code')), 'required' => true, 'options' => \App\HollandCode::filter()->get()->map(function ($holland_code) {
+                        return [ 'value' => $holland_code->id, 'text' => $holland_code->name ];
+                    })->prepend([ 'value' => '', 'text' => '-' ])->toArray() ],
+                ]
+            ],
+            'edit' => [
+                'career' => [
+                    //[ 'field' => 'select', 'name' => 'parent_id', 'label' => ucwords(__('careers.parent')), 'options' => \App\Parent::filter()->get()->map(function ($parent) {
+                    //    return [ 'value' => $parent->id, 'text' => $parent->name ];
+                    //})->prepend([ 'value' => '', 'text' => '-' ])->toArray() ],
+                    [ 'field' => 'input', 'type' => 'text', 'name' => 'name', 'label' => ucwords(__('careers.name')) ],
+                    [ 'field' => 'select', 'multiple' => 'multiple', 'name' => 'holland_code_id', 'label' => ucwords(__('careers.holland_code')), 'options' => \App\HollandCode::filter()->get()->map(function ($holland_codes) {
+                        return [ 'value' => $holland_codes->id, 'text' => $holland_codes->name ];
+                    })->prepend([ 'value' => '', 'text' => '-' ])->toArray() ],
+                ]
+            ]
+        ];
+    }
+
     /**
      * Rules
      * @param  \Illuminate\Http\Request|null $request
@@ -22,12 +102,11 @@ class CareerController extends Controller
     {
         return [
             'store' => [
-                'holland_code_id' => 'required|exists:holland_code,id',
+                //'parent_id' => 'required|exists:parents,id',
                 'name' => 'required|string|max:255',
             ],
             'update' => [
                 //'parent_id' => 'exists:parents,id',
-                'holland_code_id' => 'exists:holland_code,id',
                 'name' => 'string|max:255',
             ]
         ];
@@ -55,7 +134,11 @@ class CareerController extends Controller
             ->paginate()->appends(request()->query());
         $this->authorize('index', 'App\Career');
 
-        return view('careers/index', ['careers' => $careers]);
+        return response()->view('careers.index', [
+            'careers' => $careers,
+            'relations' => self::relations(request()),
+            'visibles' => self::visibles(request())['index']
+        ]);
     }
 
     /**
@@ -67,8 +150,10 @@ class CareerController extends Controller
     public function create()
     {
         $this->authorize('create', 'App\Career');
-        $holland_codes = HollandCode::all();
-        return view('careers/create', ['holland_codes' => $holland_codes->pluck('name', 'id')]);
+
+        return response()->view('careers.create', [
+            'fields' => self::fields(request())['create']
+        ]);
     }
 
     /**
@@ -81,14 +166,33 @@ class CareerController extends Controller
     public function store(Request $request)
     {
         $this->authorize('create', 'App\Career');
-        
-        $career = new Career; 
+        $request->validate(self::rules($request)['store']);
 
-        $career->name = $request->career_name;
+        $career = new Career;
+        foreach (self::rules($request)['store'] as $key => $value) {
+            if (str_contains($value, [ 'file', 'image', 'mimetypes', 'mimes' ])) {
+                if ($request->hasFile($key)) {
+                    $career->{$key} = $request->file($key)->store('careers');
+                } elseif ($request->exists($key)) {
+                    $career->{$key} = $request->{$key};
+                }
+            } elseif ($request->exists($key)) {
+                $career->{$key} = $request->{$key};
+            }
+        }
 
         $career->save();
-        $career->hollandCodes()->attach($request->holland_codes);
-        return redirect()->route('careers.index');
+
+        $holland_code = HollandCode::find($request->holland_code_id);
+        $career->hollandCodes()->attach($holland_code);
+
+        if (request()->filled('redirect') && starts_with(request()->redirect, request()->root()))
+            $response = response()->redirectTo(request()->redirect);
+        else
+            $response = response()->redirectToRoute('careers.show', $career->getKey());
+
+        return $response->withInput([ $career->getForeignKey() => $career->getKey() ])
+            ->with('status', __('Success'));
     }
 
     /**
@@ -101,6 +205,12 @@ class CareerController extends Controller
     public function show(Career $career)
     {
         $this->authorize('view', $career);
+
+        return response()->view('careers.show', [
+            'career' => $career,
+            'relations' => self::relations(request(), $career),
+            'visibles' => self::visibles(request(), $career)['show'],
+        ]);
     }
 
     /**
@@ -114,7 +224,10 @@ class CareerController extends Controller
     {
         $this->authorize('update', $career);
 
-
+        return response()->view('careers.edit', [
+            'career' => $career,
+            'fields' => self::fields(request(), $career)['edit']
+        ]);
     }
 
     /**
@@ -129,6 +242,30 @@ class CareerController extends Controller
     {
         $this->authorize('update', $career);
         $request->validate(self::rules($request, $career)['update']);
+
+        foreach (self::rules($request, $career)['update'] as $key => $value) {
+            if (str_contains($value, [ 'file', 'image', 'mimetypes', 'mimes' ])) {
+                if ($request->hasFile($key)) {
+                    $career->{$key} = $request->file($key)->store('careers');
+                } elseif ($request->exists($key)) {
+                    $career->{$key} = $request->{$key};
+                }
+            } elseif ($request->exists($key)) {
+                $career->{$key} = $request->{$key};
+            }
+        }
+        $career->save();
+
+        $holland_code = HollandCode::find($request->holland_code_id);
+        $career->hollandCodes()->attach($holland_code);
+
+        if (request()->filled('redirect') && starts_with(request()->redirect, request()->root()))
+            $response = response()->redirectTo(request()->redirect);
+        else
+            $response = response()->redirectToRoute('careers.show', $career->getKey());
+
+        return $response->withInput([ $career->getForeignKey() => $career->getKey() ])
+            ->with('status', __('Success'));
     }
 
     /**
@@ -143,5 +280,12 @@ class CareerController extends Controller
     {
         $this->authorize('delete', $career);
         $career->delete();
+
+        if (request()->filled('redirect') && starts_with(request()->redirect, request()->root()) && !str_contains(request()->redirect, '/careers/'.$career->getKey()))
+            $response = response()->redirectTo(request()->redirect);
+        else
+            $response = response()->redirectToRoute('careers.index');
+
+        return $response->with('status', __('Success'));
     }
 }

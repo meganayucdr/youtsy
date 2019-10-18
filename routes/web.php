@@ -25,3 +25,4 @@ Route::resource('role/users', 'Role\UserController', [ 'as' => 'role' ]);
 Route::resource('roles.users', 'Role\UserController');
 Route::resource('holland_codes', 'HollandCodeController');
 Route::resource('careers', 'CareerController');
+Route::resource('careers', 'CareerController');
