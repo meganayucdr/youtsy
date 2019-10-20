@@ -3,13 +3,13 @@
 namespace App\Policies;
 
 use App\User;
-use App\Role;
+use App\HollandCode;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 /**
- * Role Policy
+ * HollandCode Policy
  */
-class RolePolicy
+class HollandCodePolicy
 {
     use HandlesAuthorization;
 
@@ -28,10 +28,10 @@ class RolePolicy
      * Determine whether the user can view the role.
      *
      * @param  \App\User  $user
-     * @param  \App\Role $role
+     * @param  App\HollandCode $hollandCode
      * @return mixed
      */
-    public function view(User $user, Role $role)
+    public function view(User $user, HollandCode $hollandCode)
     {
         return $user->role_id == 2; // TODO: Change as needed, but leave it true if no policy
     }
@@ -51,10 +51,10 @@ class RolePolicy
      * Determine whether the user can update the role.
      *
      * @param  \App\User  $user
-     * @param  \App\Role $role
+     * @param  \App\HollandCode $hollandCode
      * @return mixed
      */
-    public function update(User $user, Role $role)
+    public function update(User $user, HollandCode $hollandCode)
     {
         return $user->role_id == 2; // TODO: Change as needed, but leave it true if no policy
     }
@@ -63,12 +63,11 @@ class RolePolicy
      * Determine whether the user can delete the role.
      *
      * @param  \App\User  $user
-     * @param  \App\Role $role
+     * @param  \App\HollandCode $hollandCode
      * @return mixed
      */
-    public function delete(User $user, Role $role)
+    public function delete(User $user, HollandCode $hollandCode)
     {
         return $user->role_id == 2; // TODO: Change as needed, but leave it true if no policy
     }
-
 }

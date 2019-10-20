@@ -3,20 +3,20 @@
 namespace App\Policies;
 
 use App\User;
-use App\Role;
+use App\Option;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 /**
- * Role Policy
+ * Option Policy
  */
-class RolePolicy
+class OptionPolicy
 {
     use HandlesAuthorization;
 
     /**
      * Determine whether the user can view list of model.
      *
-     * @param  \App\User  $user
+     * @param  App\User  $user
      * @return mixed
      */
     public function index(User $user)
@@ -28,10 +28,10 @@ class RolePolicy
      * Determine whether the user can view the role.
      *
      * @param  \App\User  $user
-     * @param  \App\Role $role
+     * @param  App\Option  $option
      * @return mixed
      */
-    public function view(User $user, Role $role)
+    public function view(User $user, Option  $option)
     {
         return $user->role_id == 2; // TODO: Change as needed, but leave it true if no policy
     }
@@ -51,10 +51,10 @@ class RolePolicy
      * Determine whether the user can update the role.
      *
      * @param  \App\User  $user
-     * @param  \App\Role $role
+     * @param  \App\Option  $option
      * @return mixed
      */
-    public function update(User $user, Role $role)
+    public function update(User $user, Option  $option)
     {
         return $user->role_id == 2; // TODO: Change as needed, but leave it true if no policy
     }
@@ -63,12 +63,11 @@ class RolePolicy
      * Determine whether the user can delete the role.
      *
      * @param  \App\User  $user
-     * @param  \App\Role $role
+     * @param  \App\Option  $option
      * @return mixed
      */
-    public function delete(User $user, Role $role)
+    public function delete(User $user, Option  $option)
     {
         return $user->role_id == 2; // TODO: Change as needed, but leave it true if no policy
     }
-
 }
