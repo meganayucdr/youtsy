@@ -6,14 +6,14 @@ use Smartisan\Filters\Traits\Filterable;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * HollandCode Model
+ * Question Model
  */
-class HollandCode extends Model
+class Question extends Model
 {
     use Filterable;
 
     /** @var string Filter Class */
-    protected $filters = 'App\Filters\HollandCodeFilter';
+    protected $filters = 'App\Filters\QuestionFilter';
 
     /** @var string $table */
     //protected $table = '';
@@ -42,11 +42,7 @@ class HollandCode extends Model
     //protected $connection = '';
 
     // TODO: Define other default value and relations
-    public function careers()   {
-        return $this->belongsToMany('App\Career', 'career_holland_code');
-    }
-
-    public function question()  {
-        return $this->hasMany('App\Question');
+    public function hollandCodes()  {
+        return $this->belongsTo('App\HollandCode');
     }
 }
