@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Question;
 use App\Option;
 use App\User;
+use Illuminate\Support\Facades\Auth;
+use App\HollandTestDetail;
+use App\Http\Controllers\HollandTestDetailController;
 
 /**
  * HollandTestController
@@ -279,16 +282,47 @@ class HollandTestController extends Controller
     public function showTest()  {
         $questions = Question::paginate(10);
         $options = Option::all();
+
+        return response()->view('holland_tests.show_test', [
+            'questions' => $questions,
+            'options' => $options
+        ]);
+    }
+
+    public function storeUserTest(Request $request)   {
+        $options = $request->input('options');
+        $questions = $request->input('questions');
         $holland_test_id = HollandTest::select('id')->orderBy('created_at', 'desc')->first();
 
         if ($holland_test_id == null)   {
             $holland_test_id = 1;
+        } else {
+            $holland_test_id++;
         }
 
-        return response()->view('holland_tests.show_test', [
-            'questions' => $questions,
-            'options' => $options,
-            'holland_test_id' => $holland_test_id
-        ]);
+        $holland_test = new HollandTest();
+        $holland_test->user_id = Auth::id();
+        $this->storeToDatabase($holland_test);
+
+        $detail_controller = new HollandTestDetailController();
+
+        /*$holland_test_detail = new HollandTestDetail();
+        $details_controller = new HollandTestDetailController();
+        $details = array();
+        foreach ($questions as $question)   {
+            $holland_test_detail->holland_test_id = $holland_test_id;
+            $holland_test_detail->question_id = $question;
+            $holland_test_detail->option_id = $options;
+
+            array_push($details, $holland_test_detail);
+        }*/
+
+        /*$details_controller->storeToDatabase($details);*/
+
+        return redirect('/')->with('success');
+    }
+
+    public function storeToDatabase(HollandTest $hollandTest)   {
+        $hollandTest->save();
     }
 }

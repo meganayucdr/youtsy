@@ -29,4 +29,5 @@ Route::resource('options', 'OptionController');
 Route::resource('questions', 'QuestionController');
 Route::resource('holland_tests', 'HollandTestController');
 Route::resource('holland_test_details', 'HollandTestDetailController');
-Route::get('/start_test', 'HollandTestController@showTest')->name('start_test');
+Route::get('/start_test', 'HollandTestController@showTest')->name('holland_tests.start_test');
+Route::put('/store_user_test', 'HollandTestController@storeUserTes')->name('holland_tests.store_user_test');

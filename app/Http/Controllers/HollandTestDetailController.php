@@ -272,4 +272,26 @@ class HollandTestDetailController extends Controller
 
         return $response->with('status', __('Success'));
     }
+
+    public function storeToDatabase($details)   {
+        HollandTestDetail::insert($details);
+    }
+
+    public function addToArray($holland_test_id, $question_id, $option_id, $length, $index)    {
+        if( $length == 0 )  {
+            $index++;
+            $details = array();
+            $holland_test_detail = new HollandTestDetail();
+
+            $holland_test_detail->holland_test_id = $holland_test_id;
+            $holland_test_detail->question_id = $question_id[$index];
+            $holland_test_detail->option_id = $option_id;
+
+            array_push($details, $holland_test_detail);
+
+            return $details;
+        } else {
+           return $this->addToArray($holland_test_id, $question_id, $option_id, $length-1, $index);
+        }
+    }
 }

@@ -8,6 +8,5 @@
   'resource_route' => 'holland_tests',
   'model_variable' => 'holland_test',
   'model_class' => \App\HollandTest::class,
-  'models' => $holland_tests,
-  'action_buttons_view' => 'generator::components.models.index.action_buttons',
+  'models' => $holland_tests
 ])
