@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 Route::resource('users', 'UserController');
 Route::resource('roles', 'RoleController');
@@ -23,6 +23,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('role/users', 'Role\UserController', [ 'as' => 'role' ]);
 Route::resource('roles.users', 'Role\UserController');
-Route::resource('holland_condes', 'HollandCondeController');
+Route::resource('holland_codes', 'HollandCodeController');
+Route::resource('careers', 'CareerController');
 Route::resource('options', 'OptionController');
 Route::resource('questions', 'QuestionController');
