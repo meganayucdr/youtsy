@@ -27,3 +27,6 @@ Route::resource('holland_codes', 'HollandCodeController');
 Route::resource('careers', 'CareerController');
 Route::resource('options', 'OptionController');
 Route::resource('questions', 'QuestionController');
+Route::resource('holland_tests', 'HollandTestController');
+Route::resource('holland_test_details', 'HollandTestDetailController');
+Route::get('/start_test', 'HollandTestController@showTest')->name('start_test');

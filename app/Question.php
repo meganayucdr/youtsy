@@ -45,4 +45,8 @@ class Question extends Model
     public function hollandCodes()  {
         return $this->belongsTo('App\HollandCode');
     }
+
+    public function hollandTestDetails()  {
+        return $this->hasMany('App\HollandTestDetail');
+    }
 }

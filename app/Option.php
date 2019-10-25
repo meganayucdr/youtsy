@@ -42,4 +42,7 @@ class Option extends Model
     //protected $connection = '';
 
     // TODO: Define other default value and relations
+    public function hollandTestDetails()  {
+        return $this->hasMany('App\HollandTestDetail');
+    }
 }
