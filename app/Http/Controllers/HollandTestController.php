@@ -305,6 +305,7 @@ class HollandTestController extends Controller
         $this->storeToDatabase($holland_test);
 
         $detail_controller = new HollandTestDetailController();
+        $detail_controller->storeToDatabase($holland_test_id, $questions, $options, $questions->count(), 0);
 
         /*$holland_test_detail = new HollandTestDetail();
         $details_controller = new HollandTestDetailController();
