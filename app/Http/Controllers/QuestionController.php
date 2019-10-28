@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\HollandCode;
 use App\Question;
 use Illuminate\Http\Request;
 
@@ -44,13 +45,14 @@ class QuestionController extends Controller
                 'question' => [
                     //[ 'name' => 'parent', 'label' => ucwords(__('questions.parent')), 'column' => 'name' ], // Only support belongsTo, hasOne
                     [ 'name' => 'question', 'label' => ucwords(__('questions.question')) ],
-                    [ 'name' => 'holland_code', 'label' => ucwords(__('questions.holland_code')), 'column' => 'name' ],
+                    [ 'name' => 'hollandCode', 'label' => ucwords(__('questions.holland_code')), 'column' => 'name' ],
                 ]
             ],
             'show' => [
                 'question' => [
                     //[ 'name' => 'parent', 'label' => ucwords(__('questions.parent')), 'column' => 'name' ], // Only support belongsTo, hasOne
-                    [ 'name' => 'name', 'label' => ucwords(__('questions.name')) ],
+                    [ 'name' => 'question', 'label' => ucwords(__('questions.question')) ],
+                    [ 'name' => 'hollandCode', 'label' => ucwords(__('questions.holland_code')), 'column' => 'name' ],
                 ]
             ]
         ];
@@ -70,7 +72,10 @@ class QuestionController extends Controller
                     //[ 'field' => 'select', 'name' => 'parent_id', 'label' => ucwords(__('questions.parent')), 'required' => true, 'options' => \App\Parent::filter()->get()->map(function ($parent) {
                     //    return [ 'value' => $parent->id, 'text' => $parent->name ];
                     //})->prepend([ 'value' => '', 'text' => '-' ])->toArray() ],
-                    [ 'field' => 'input', 'type' => 'text', 'name' => 'name', 'label' => ucwords(__('questions.name')), 'required' => true ],
+                    [ 'field' => 'input', 'type' => 'text', 'name' => 'question', 'label' => ucwords(__('questions.question')), 'required' => true ],
+                    [ 'field' => 'select', 'name' => 'holland_code_id', 'label' => ucwords(__('questions.holland_code')), 'required' => true, 'options' => \App\HollandCode::filter()->get()->map(function ($holland_code) {
+                        return [ 'value' => $holland_code->id, 'text' => $holland_code->name ];
+                    })->prepend([ 'value' => '', 'text' => '-' ])->toArray() ],
                 ]
             ],
             'edit' => [
@@ -78,7 +83,10 @@ class QuestionController extends Controller
                     //[ 'field' => 'select', 'name' => 'parent_id', 'label' => ucwords(__('questions.parent')), 'options' => \App\Parent::filter()->get()->map(function ($parent) {
                     //    return [ 'value' => $parent->id, 'text' => $parent->name ];
                     //})->prepend([ 'value' => '', 'text' => '-' ])->toArray() ],
-                    [ 'field' => 'input', 'type' => 'text', 'name' => 'name', 'label' => ucwords(__('questions.name')) ],
+                    [ 'field' => 'input', 'type' => 'text', 'name' => 'question', 'label' => ucwords(__('questions.question')) ],
+                    [ 'field' => 'select', 'name' => 'holland_code_id', 'label' => ucwords(__('questions.holland_code')), 'options' => \App\HollandCode::filter()->get()->map(function ($holland_code) {
+                        return [ 'value' => $holland_code->id, 'text' => $holland_code->name ];
+                    })->prepend([ 'value' => '', 'text' => '-' ])->toArray() ],
                 ]
             ]
         ];
@@ -95,11 +103,11 @@ class QuestionController extends Controller
         return [
             'store' => [
                 //'parent_id' => 'required|exists:parents,id',
-                'name' => 'required|string|max:255',
+                'question' => 'required|string',
             ],
             'update' => [
                 //'parent_id' => 'exists:parents,id',
-                'name' => 'string|max:255',
+                'question' => 'string',
             ]
         ];
     }
@@ -172,6 +180,10 @@ class QuestionController extends Controller
                 $question->{$key} = $request->{$key};
             }
         }
+
+        $holland_code = HollandCode::find($request->holland_code_id);
+        $question->hollandCode()->associate($holland_code);
+
         $question->save();
 
         if (request()->filled('redirect') && starts_with(request()->redirect, request()->root()))
@@ -243,6 +255,9 @@ class QuestionController extends Controller
             }
         }
         $question->save();
+
+        $holland_code = HollandCode::find($request->holland_code_id);
+        $question->hollandCode()->associate($holland_code);
 
         if (request()->filled('redirect') && starts_with(request()->redirect, request()->root()))
             $response = response()->redirectTo(request()->redirect);

@@ -42,7 +42,7 @@ class Question extends Model
     //protected $connection = '';
 
     // TODO: Define other default value and relations
-    public function hollandCodes()  {
+    public function hollandCode()  {
         return $this->belongsTo('App\HollandCode');
     }
 

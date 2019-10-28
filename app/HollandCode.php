@@ -46,7 +46,7 @@ class HollandCode extends Model
         return $this->belongsToMany('App\Career', 'career_holland_code');
     }
 
-    public function question()  {
+    public function questions()  {
         return $this->hasMany('App\Question');
     }
 }
