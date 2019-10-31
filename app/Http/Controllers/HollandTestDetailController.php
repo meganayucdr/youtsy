@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\HollandTest;
 use App\HollandTestDetail;
+use App\Option;
+use App\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * HollandTestDetailController
@@ -273,27 +277,34 @@ class HollandTestDetailController extends Controller
         return $response->with('status', __('Success'));
     }
 
-    public function storeToDatabase($holland_test_id, $question_id, $option_id, $length, $index)   {
-        $details = $this->addToArray($holland_test_id, $question_id, $option_id, $length, $index);
+    public function storeToDatabase(HollandTest $hollandTest, Request $request)   {
+        $details = array();
+        $options = $request->input('options_id');
+        $questions = $request->input('questions_id');
+
+        $hollandTestDetail = new HollandTestDetail();
+
+        $details = $this->addToArray($details, $hollandTest, $hollandTestDetail, $questions, $options, $questions->count(), 0);
         HollandTestDetail::insert($details);
     }
 
-    public function addToArray($holland_test_id, $question_id, $option_id, $length, $index)
+    public function addToArray(array $details, HollandTest $hollandTest, HollandTestDetail $hollandTestDetail, $question_id, $option_id, $length, $index)
     {
-        $details = array();
-        $holland_test_detail = new HollandTestDetail();
+        $hollandTestDetail->hollandTest()->associate($hollandTest);
 
-        $holland_test_detail->holland_test_id = $holland_test_id;
-        $holland_test_detail->question_id = $question_id[$index];
-        $holland_test_detail->option_id = $option_id;
+        $question = Question::find($question_id[$index]);
+        $hollandTestDetail->question()->associate($question);
 
-        array_push($details, $holland_test_detail);
+        $option = Option::find($question_id[$question->id]);
+        $hollandTestDetail->option()->associate($option);
+
+        array_push($details, $hollandTestDetail);
 
         if ($length == 0) {
-            return;
+            return 1;
         }
 
-        $this->addToArray($holland_test_id, $question_id, $option_id, $length - 1, index+1);
+        $this->addToArray($details, $hollandTest, $hollandTestDetail, $question_id, $option_id, $length-1, $index+1);
 
         return $details;
     }

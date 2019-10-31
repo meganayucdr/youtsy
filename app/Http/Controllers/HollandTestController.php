@@ -290,22 +290,15 @@ class HollandTestController extends Controller
     }
 
     public function storeUserTest(Request $request)   {
-        $options = $request->input('options');
-        $questions = $request->input('questions');
-        $holland_test_id = HollandTest::select('id')->orderBy('created_at', 'desc')->first();
-
-        if ($holland_test_id == null)   {
-            $holland_test_id = 1;
-        } else {
-            $holland_test_id++;
-        }
-
         $holland_test = new HollandTest();
-        $holland_test->user_id = Auth::id();
+
+        $user = User::find(Auth::id());
+        $holland_test->user()->associate($user);
+
         $this->storeToDatabase($holland_test);
 
         $detail_controller = new HollandTestDetailController();
-        $detail_controller->storeToDatabase($holland_test_id, $questions, $options, $questions->count(), 0);
+        $detail_controller->storeToDatabase($holland_test, $request);
 
         /*$holland_test_detail = new HollandTestDetail();
         $details_controller = new HollandTestDetailController();

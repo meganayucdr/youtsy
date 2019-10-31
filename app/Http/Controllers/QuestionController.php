@@ -254,10 +254,11 @@ class QuestionController extends Controller
                 $question->{$key} = $request->{$key};
             }
         }
-        $question->save();
 
         $holland_code = HollandCode::find($request->holland_code_id);
         $question->hollandCode()->associate($holland_code);
+
+        $question->save();
 
         if (request()->filled('redirect') && starts_with(request()->redirect, request()->root()))
             $response = response()->redirectTo(request()->redirect);
