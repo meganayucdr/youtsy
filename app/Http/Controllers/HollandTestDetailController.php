@@ -278,34 +278,22 @@ class HollandTestDetailController extends Controller
     }
 
     public function storeToDatabase(HollandTest $hollandTest, Request $request)   {
-        $details = array();
+//        $details = array();
         $options = $request->input('options_id');
         $questions = $request->input('questions_id');
 
         $hollandTestDetail = new HollandTestDetail();
 
-        $details = $this->addToArray($details, $hollandTest, $hollandTestDetail, $questions, $options, $questions->count(), 0);
-        HollandTestDetail::insert($details);
-    }
+        foreach ( $questions as $question_id ) {
+            $hollandTestDetail->hollandTest()->associate($hollandTest);
 
-    public function addToArray(array $details, HollandTest $hollandTest, HollandTestDetail $hollandTestDetail, $question_id, $option_id, $length, $index)
-    {
-        $hollandTestDetail->hollandTest()->associate($hollandTest);
+            $question = Question::find($question_id);
+            $hollandTestDetail->question()->associate($question);
 
-        $question = Question::find($question_id[$index]);
-        $hollandTestDetail->question()->associate($question);
+            $option = Option::find($options[$question->id]);
+            $hollandTestDetail->option()->associate($option);
 
-        $option = Option::find($question_id[$question->id]);
-        $hollandTestDetail->option()->associate($option);
-
-        array_push($details, $hollandTestDetail);
-
-        if ($length == 0) {
-            return 1;
+            $hollandTestDetail->save();
         }
-
-        $this->addToArray($details, $hollandTest, $hollandTestDetail, $question_id, $option_id, $length-1, $index+1);
-
-        return $details;
     }
 }

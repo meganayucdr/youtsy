@@ -13,9 +13,9 @@
                     <input type="hidden" name="questions_id[]" value="{{ $question->id }}" class="form-control">
                     <div class="row justify-content-center">
                         <div class="col-2">
-                            <p class="text-left">Sangat Tidak Setuju</p>
+                            <p class="text-left text-md-right">Sangat Tidak Setuju</p>
                         </div>
-                        <div class="col-2">
+                        <div class="col-2 text-center">
                         @foreach( $options as $option )
                             <label class="container-radio">
                                 {{ Form::radio('options_id['. $question->id . ']', $option->id, false) }}
@@ -24,7 +24,7 @@
                         @endforeach
                         </div>
                         <div class="col-2">
-                            <p class="text-right">Sangat Setuju</p>
+                            <p class="text-right text-md-left">Sangat Setuju</p>
                         </div>
                     </div>
                 </div>
@@ -40,13 +40,6 @@
         {{ Form::close() }}
 
     </div>
-    <script type="text/javascript">
-        $(document).ready(function() {
-           $("label").click(function()  {
-
-           })
-        });
-    </script>
 @endsection
 
 

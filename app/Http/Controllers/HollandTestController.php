@@ -300,19 +300,6 @@ class HollandTestController extends Controller
         $detail_controller = new HollandTestDetailController();
         $detail_controller->storeToDatabase($holland_test, $request);
 
-        /*$holland_test_detail = new HollandTestDetail();
-        $details_controller = new HollandTestDetailController();
-        $details = array();
-        foreach ($questions as $question)   {
-            $holland_test_detail->holland_test_id = $holland_test_id;
-            $holland_test_detail->question_id = $question;
-            $holland_test_detail->option_id = $options;
-
-            array_push($details, $holland_test_detail);
-        }*/
-
-        /*$details_controller->storeToDatabase($details);*/
-
         return redirect('/')->with('success');
     }
 

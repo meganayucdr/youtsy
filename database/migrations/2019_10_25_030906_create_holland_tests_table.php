@@ -16,7 +16,6 @@ class CreateHollandTestsTable extends Migration
         Schema::create('holland_tests', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
-            $table->unsignedInteger('holland_test_detail_id');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
