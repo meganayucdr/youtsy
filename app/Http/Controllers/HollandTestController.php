@@ -279,13 +279,29 @@ class HollandTestController extends Controller
         return $response->with('status', __('Success'));
     }
 
-    public function showTest()  {
+    public function showTest(Request $request)  {
         $questions = Question::paginate(10);
         $options = Option::all();
 
+        $data = $request->all();
+
+        if($request->ajax())    {
+            if($request->isMethod('get'))   {
+                return view('holland_tests.data_test', [
+                    'questions' => $questions,
+                    'options' => $options,
+                    'data' => $data
+                ]);
+            } else if ($request->isMethod('post'))  {
+
+            }
+
+        }
+
         return response()->view('holland_tests.show_test', [
             'questions' => $questions,
-            'options' => $options
+            'options' => $options,
+            'data' => $data
         ]);
     }
 

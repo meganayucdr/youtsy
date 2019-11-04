@@ -8,6 +8,7 @@ use App\Option;
 use App\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 /**
  * HollandTestDetailController
@@ -278,13 +279,14 @@ class HollandTestDetailController extends Controller
     }
 
     public function storeToDatabase(HollandTest $hollandTest, Request $request)   {
-//        $details = array();
+        $details = array();
         $options = $request->input('options_id');
         $questions = $request->input('questions_id');
 
         $hollandTestDetail = new HollandTestDetail();
-
+        $i = 0 ;
         foreach ( $questions as $question_id ) {
+            $i++;
             $hollandTestDetail->hollandTest()->associate($hollandTest);
 
             $question = Question::find($question_id);
@@ -293,7 +295,13 @@ class HollandTestDetailController extends Controller
             $option = Option::find($options[$question->id]);
             $hollandTestDetail->option()->associate($option);
 
-            $hollandTestDetail->save();
+            array_push($details, [  'holland_test_id' => $hollandTestDetail->holland_test_id,
+                                            'option_id'     => $hollandTestDetail->option_id,
+                                            'question_id'   => $hollandTestDetail->question_id,
+                                            'created_at'    => Carbon::now(),
+                                            'updated_at'    => Carbon::now()]);
         }
+//        dd($details);
+        HollandTestDetail::insert($details);
     }
 }

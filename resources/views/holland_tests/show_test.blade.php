@@ -1,45 +1,62 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <div class="align-center py-5">
-            <h1 class="text-center">Mulai Tes Sekarang!</h1>
-        </div>
-        {{ Form::open(array('route' => 'holland_tests.store_user_test')) }}
-            {{ csrf_field() }}
-            @foreach( $questions as $question )
-                <div class="py-4">
-                    <h3 class="text-center">{{ $question->question }}</h3>
-                    <input type="hidden" name="questions_id[]" value="{{ $question->id }}" class="form-control">
-                    <div class="row justify-content-center">
-                        <div class="col-2">
-                            <p class="text-left text-md-right">Sangat Tidak Setuju</p>
-                        </div>
-                        <div class="col-2 text-center">
-                        @foreach( $options as $option )
-                            <label class="container-radio">
-                                {{ Form::radio('options_id['. $question->id . ']', $option->id, false) }}
-                                <span class="checkmark"></span>
-                            </label>
-                        @endforeach
-                        </div>
-                        <div class="col-2">
-                            <p class="text-right text-md-left">Sangat Setuju</p>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-            @if( $questions->currentPage() == $questions->lastPage() )
-                <div class="text-center pb-5">
-                    {{ Form::submit('Submit!', ['class' => 'btn header-button btn-md']) }}
-                </div>
-            @endif
-            <div class="text-center">
-                {{ $questions->links() }}
-            </div>
-        {{ Form::close() }}
-
+    <div class="container" id="tag_container">
+        @include('holland_tests.data_test')
     </div>
 @endsection
+@section('script')
+    <script type="text/javascript">
+        $(window).on('hashchange', function() {
+            if (window.location.hash) {
+                var page = window.location.hash.replace('#', '');
+                if (page == Number.NaN || page <= 0) {
+                    return false;
+                }   else    {
+                    getData(page);
+                }
+            }
+        });
 
+        $(document).ready(function()    {
+            $(document).on('click', '.pagination a',function(event) {
+                event.preventDefault();
+                $('li').removeClass('active');
+                $(this).parent('li').addClass('active');
+                var myurl = $(this).attr('href');
+                var page=$(this).attr('href').split('page=')[1];
+
+                getData(page);
+            });
+        });
+
+        function postData(page) {
+            var questions = $("input[name = questions_id]").val();
+            var options = $("input[name  = options_id]").val();
+
+            var data_test = [];
+            data_test.push({questions_id: questions}, {options_id: options});
+            $.ajax({
+                type: 'post',
+                url: '/start_test?page' + page,
+                data: {data_test: data_test}
+            });
+        }
+
+        function getData(page) {
+            $.ajax(
+                {
+                    url: '/start_test?page=' + page,
+                    type: "get",
+                    datatype: "html"
+                }).done(function(data){
+                $("#tag_container").empty().html(data);
+                location.hash = page;
+            }).fail(function(jqXHR, ajaxOptions, thrownError)   {
+                alert('No response from server');
+            });
+        }
+
+    </script>
+@endsection
 
