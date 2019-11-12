@@ -10,6 +10,7 @@ use App\User;
 use Illuminate\Support\Facades\Auth;
 use App\HollandTestDetail;
 use App\Http\Controllers\HollandTestDetailController;
+use Illuminate\Support\Facades\Session;
 
 /**
  * HollandTestController
@@ -279,18 +280,38 @@ class HollandTestController extends Controller
         return $response->with('status', __('Success'));
     }
 
-    public function showTest()  {
-        $questions = Question::paginate(10);
+    public function showTest(Request $request)  {
+        $questions = Question::paginate(6);
         $options = Option::all();
+
+        $data = $request->all();
+
+        if($request->ajax())    {
+            //dd($data);
+            //$this->storeToSession($request);
+            return view('holland_tests.data_test', [
+                'questions' => $questions,
+                'options' => $options,
+                'data' => $data
+            ]);
+        }
 
         return response()->view('holland_tests.show_test', [
             'questions' => $questions,
-            'options' => $options
+            'options' => $options,
+            'data' => $data
         ]);
+    }
+
+    public function storeToSession (Request $request)   {
+        $request->session()->push('data_test', $request->data_test);
     }
 
     public function storeUserTest(Request $request)   {
         $holland_test = new HollandTest();
+
+        dd($request->session()->get('data_test'));
+        //dd($request);
 
         $user = User::find(Auth::id());
         $holland_test->user()->associate($user);

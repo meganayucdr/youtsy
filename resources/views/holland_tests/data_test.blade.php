@@ -1,17 +1,20 @@
 <div class="align-center py-5">
     <h1 class="text-center">Mulai Tes Sekarang!</h1>
 </div>
+
 {{ Form::open(array('route' => 'holland_tests.store_user_test')) }}
 {{ csrf_field() }}
-@if($questions->currentPage())
-    $
-@endif
-
+@php
+    $currentPage = $questions->currentPage();
+    $i = 0;
+@endphp
 @foreach( $questions as $question )
     <div class="py-4">
         <h3 class="text-center">{{ $question->question }}</h3>
-{{--        <input type="hidden" name="questions_id[]" value="{{ $question->id }}" class="form-control">--}}
-        {{ Form::hidden('questions_id['. $questions->getCurrentPage() .']['. $question->id .']', $question->id, array('class' => 'form-control')) }}
+        {{ Form::hidden('questions_id['. $currentPage .']['. $i .']', $question->id) }}
+        @php
+            $i++;
+        @endphp
         <div class="row justify-content-center">
             <div class="col-2">
                 <p class="text-left text-md-right">Sangat Tidak Setuju</p>

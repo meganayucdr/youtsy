@@ -1,50 +1,109 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <div class="align-center py-5">
-            <h1 class="text-center">Mulai Tes Sekarang!</h1>
-        </div>
-        {{ Session::push('test.question', []) }}
-        {{ Session::push('test.answer', []) }}
-        {{ Form::open(array('route' => 'holland_tests.store_user_test')) }}
-            {{ csrf_field() }}
-            @foreach( $questions as $question )
-                <div class="py-4">
-                    <h3 class="text-center">{{ $question->question }}</h3>
-                    <input type="hidden" name="questions_id[]" value="{{ $question->id }}" class="form-control">
-                    {{ Session::push('test.question', $question->id) }}
-                    <div class="row justify-content-center">
-                        <div class="col-2">
-                            <p class="text-left text-md-right">Sangat Tidak Setuju</p>
-                        </div>
-                        <div class="col-2 text-center">
-                        @foreach( $options as $option )
-                            <label class="container-radio">
-                                {{ Form::radio('options_id['. $question->id . ']', $option->id, false) }}
-                                <span class="checkmark"></span>
-                            </label>
-                                {{ Session::push('test.question', $options_id[$question->id]) }}
-                        @endforeach
-                        </div>
-                        <div class="col-2">
-                            <p class="text-right text-md-left">Sangat Setuju</p>
-                        </div>
-                    </div>
-                </div>
-                {{ Session::push() }}
-            @endforeach
-            @if( $questions->currentPage() == $questions->lastPage() )
-                <div class="text-center pb-5">
-                    {{ Form::submit('Submit!', ['class' => 'btn header-button btn-md']) }}
-                </div>
-            @endif
-            <div class="text-center">
-                {{ $questions->links() }}
-            </div>
-        {{ Form::close() }}
-
+    <div class="container" id="table_data">
+        @include('holland_tests.data_test')
     </div>
 @endsection
+@section('script')
+{{--    <script type="text/javascript">--}}
+{{--        $(window).on('hashchange', function() {--}}
+{{--            if (window.location.hash) {--}}
+{{--                var page = window.location.hash.replace('#', '');--}}
+{{--                if (page == Number.NaN || page <= 0) {--}}
+{{--                    return false;--}}
+{{--                }   else    {--}}
+{{--                    getData(page);--}}
+{{--                }--}}
+{{--            }--}}
+{{--        });--}}
 
+{{--        $(document).ready(function()    {--}}
+{{--            $(document).on('click', '.pagination a',function(event) {--}}
+{{--                event.preventDefault();--}}
+{{--                $('li').removeClass('active');--}}
+{{--                $(this).parent('li').addClass('active');--}}
+{{--                var myurl = $(this).attr('href');--}}
+{{--                var page=$(this).attr('href').split('page=')[1];--}}
+{{--                postData(page);--}}
+{{--                getData(page);--}}
+{{--            });--}}
+{{--        });--}}
+
+{{--        function postData(page) {--}}
+{{--            var data_test = pushIntoArray();--}}
+
+{{--            $.ajaxSetup({--}}
+{{--                header: {--}}
+{{--                    'X-CSRF-TOKEN': "{{ csrf_field() }}"--}}
+{{--                }--}}
+{{--            });--}}
+
+{{--            $.ajax({--}}
+{{--                type: 'POST',--}}
+{{--                url: '/start_test',--}}
+{{--                data: data_test,--}}
+{{--                success: function(data) {--}}
+
+{{--                }--}}
+{{--            })--}}
+{{--        }--}}
+
+{{--        function getData(page) {--}}
+{{--            $.ajax(--}}
+{{--                {--}}
+{{--                    url: '/start_test?page=' + page,--}}
+{{--                    type: "GET"--}}
+{{--                }).done(function(data){--}}
+{{--                $("#tag_container").html(data);--}}
+{{--                location.hash = page;--}}
+{{--            }).fail(function(jqXHR, ajaxOptions, thrownError)   {--}}
+{{--                alert('No response from server');--}}
+{{--            });--}}
+{{--        }--}}
+
+{{--    </script>--}}
+<script>
+
+    function pushIntoArray(page) {
+        let data = [];
+        let question;
+        let option;
+        var length = 6;
+        for (let i = 0; i < length; i++) {
+            question = $('input[name=questions_id\\['+ page +'\\]\\['+ i +'\\]]').val();
+            option = $('input[name=options_id\\['+ question +'\\]]:checked').val();
+            data.push({questions_id: question, options_id: option});
+            alert(question);
+        }
+        return data;
+    }
+
+    $(document).ready(function(){
+
+        $(document).on('click', '.pagination a', function(event){
+            event.preventDefault();
+            var page = $(this).attr('href').split('page=')[1];
+            //alert($('input[name=questions_id\\['+ page +'\\]\\['+ 1 +'\\]]').val());
+            fetch_data(page);
+        });
+
+        function fetch_data(page)
+        {
+            $.ajax({
+                url: '/start_test?page=' + page,
+                type: 'GET',
+                // data: {
+                //   'data_test': pushIntoArray()
+                // },
+                success:function(data)
+                {
+                    $('#table_data').html(data);
+                }
+            });
+        }
+
+    });
+</script>
+@endsection
 
