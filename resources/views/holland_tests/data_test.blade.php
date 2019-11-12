@@ -8,6 +8,7 @@
     $currentPage = $questions->currentPage();
     $i = 0;
 @endphp
+{{ Form::hidden('last_page', $questions->lastPage()) }}
 @foreach( $questions as $question )
     <div class="py-4">
         <h3 class="text-center">{{ $question->question }}</h3>
