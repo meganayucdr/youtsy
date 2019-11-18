@@ -281,37 +281,37 @@ class HollandTestController extends Controller
     }
 
     public function showTest(Request $request)  {
+//        $request->session()->forget('data_test');
         $questions = Question::paginate(6);
         $options = Option::all();
 
-        $data = $request->all();
+        if ($request->data_test != null)
+            $this->storeToSession($request);
 
         if($request->ajax())    {
             //dd($data);
             //$this->storeToSession($request);
             return view('holland_tests.data_test', [
                 'questions' => $questions,
-                'options' => $options,
-                'data' => $data
+                'options' => $options
             ]);
         }
 
         return response()->view('holland_tests.show_test', [
             'questions' => $questions,
-            'options' => $options,
-            'data' => $data
+            'options' => $options
         ]);
     }
 
-    public function storeToSession (Request $request)   {
+    private function storeToSession (Request $request)   {
         $request->session()->push('data_test', $request->data_test);
     }
 
     public function storeUserTest(Request $request)   {
         $holland_test = new HollandTest();
 
-        dd($request->session()->get('data_test'));
-        //dd($request);
+        $data_session = $this->getSessionData($request);
+//        dd($data_session);
 
         $user = User::find(Auth::id());
         $holland_test->user()->associate($user);
@@ -319,12 +319,26 @@ class HollandTestController extends Controller
         $this->storeToDatabase($holland_test);
 
         $detail_controller = new HollandTestDetailController();
-        $detail_controller->storeToDatabase($holland_test, $request);
+        $detail_controller->storeToDatabase($holland_test, $request, $data_session);
+        $request->session()->forget('data_test');
 
         return redirect('/')->with('success');
     }
 
     public function storeToDatabase(HollandTest $hollandTest)   {
         $hollandTest->save();
+    }
+
+    private function getSessionData(Request $request)    {
+        $data_session = [];
+        foreach ($request->session()->get('data_test') as $data_tests)    {
+            foreach ($data_tests as $data_test) {
+                array_push($data_session, [
+                    'questions' => $data_test['questions_id'],
+                    'options' => $data_test['options_id']
+                ]);
+            }
+        }
+        return $data_session;
     }
 }
