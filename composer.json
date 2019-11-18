@@ -14,7 +14,8 @@
         "laravel/framework": "5.7.*",
         "laravel/passport": "^7.5",
         "laravel/tinker": "^1.0",
-        "laravelcollective/html": "^5.7.0"
+        "laravelcollective/html": "^5.7.0",
+        "symfony/process": "^4.3"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "44bfa06e37ed3edfa1d461ead7864a35",
+    "content-hash": "320f1f3f9bed7666e00a2be591fc2c98",
     "packages": [
         {
             "name": "atnic/eloquent-filters",
@@ -4141,16 +4141,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v4.3.5",
+            "version": "v4.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "50556892f3cc47d4200bfd1075314139c4c9ff4b"
+                "reference": "3b2e0cb029afbb0395034509291f21191d1a4db0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/50556892f3cc47d4200bfd1075314139c4c9ff4b",
-                "reference": "50556892f3cc47d4200bfd1075314139c4c9ff4b",
+                "url": "https://api.github.com/repos/symfony/process/zipball/3b2e0cb029afbb0395034509291f21191d1a4db0",
+                "reference": "3b2e0cb029afbb0395034509291f21191d1a4db0",
                 "shasum": ""
             },
             "require": {
@@ -4186,7 +4186,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2019-09-26T21:17:10+00:00"
+            "time": "2019-10-28T17:07:32+00:00"
         },
         {
             "name": "symfony/psr-http-message-bridge",
