@@ -26,8 +26,8 @@ class AddForeignToCareerHollandCodeTable extends Migration
     public function down()
     {
         Schema::table('career_holland_code', function (Blueprint $table) {
-            $table->foreign('career_id')->references('id')->on('careers');
-            $table->foreign('holland_code_id')->references('id')->on('holland_codes');
+            $table->foreign('career_id')->references('id')->on('careers')->onDelete('cascade');
+            $table->foreign('holland_code_id')->references('id')->on('holland_codes')->onDelete('cascade');
         });
     }
 }

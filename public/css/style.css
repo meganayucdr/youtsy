@@ -18,12 +18,34 @@
     color: white;
 }
 
-.header-front-page {
-    background-color: #FBC02D;
-    background-image: url("../svg/header.svg");
-    background-repeat: repeat;
-    background-size: 75% 75%;
-    height: 600px;
+@media (min-width: 768px) {
+    .header-front-page {
+        background-color: #FBC02D;
+        background-image: url("../svg/header.svg");
+        background-repeat: repeat;
+        background-size: 75% 75%;
+        height: 600px;
+    }
+}
+
+@media (min-width: 540px) and (max-width: 768px) {
+    .header-front-page {
+        background-color: #FBC02D;
+        background-image: url("../svg/header.svg");
+        background-repeat: repeat;
+        background-size: 100% 50%;
+        height: 600px;
+    }
+}
+
+@media (max-width: 540px) {
+    .header-front-page {
+        background-color: #FBC02D;
+        background-image: url("../svg/header.svg");
+        background-repeat: repeat;
+        background-size: 120% 40%;
+        height: 600px;
+    }
 }
 
 .header-caption-font {
@@ -34,7 +56,13 @@
 .header-button {
     background-color: #FB8E11;
     font-family: "Roboto Mono";
-    color: white;
+    color: #f7f7f7;
+}
+
+.header-button:hover {
+    background-color: #fbac17;
+    font-family: "Roboto Mono";
+    color: #f7f7f7;
 }
 
 /* The container */
@@ -135,4 +163,26 @@
         #e9ecef;
     border-color:
         #dee2e6;
+}
+
+.dashboard-button {
+    background-color: #fcfcfc;
+    color: #FB8E11;
+    font-family: "Roboto Mono";
+}
+
+.dashboard-button:hover {
+    background-color: #fcfcfc;
+    color: #fbac17;
+    font-family: "Roboto Mono";
+}
+
+.btn-yellow {
+    background-color: #FB8E11;
+    color: #f7f7f7;
+}
+
+.btn-yellow:hover {
+    background-color: #FB8E11;
+    color: #f7f7f7;
 }

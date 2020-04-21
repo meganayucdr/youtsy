@@ -19,7 +19,7 @@ class CreateQuestionsTable extends Migration
             $table->unsignedInteger('holland_code_id');
             $table->timestamps();
 
-            $table->foreign('holland_code_id')->references('id')->on('holland_codes');
+            $table->foreign('holland_code_id')->references('id')->on('holland_codes')->onDelete('cascade');;
         });
     }
 

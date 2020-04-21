@@ -10,5 +10,6 @@ return [
     'explanation' => 'explanation',
     //'parent' => 'parent',
     'careers' => 'careers',
+    'questions' => 'questions'
 
 ];

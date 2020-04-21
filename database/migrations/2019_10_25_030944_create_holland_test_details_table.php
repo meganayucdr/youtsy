@@ -20,8 +20,8 @@ class CreateHollandTestDetailsTable extends Migration
             $table->unsignedInteger('option_id');
             $table->timestamps();
 
-            $table->foreign('question_id')->references('id')->on('questions');
-            $table->foreign('option_id')->references('id')->on('options');
+            $table->foreign('question_id')->references('id')->on('questions')->onDelete('cascade');;
+            $table->foreign('option_id')->references('id')->on('options')->onDelete('cascade');;
         });
     }
 

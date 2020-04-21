@@ -2,8 +2,8 @@
 
 return [
 
-    'plural' => 'options',
-    'singular' => 'option',
+    'plural' => 'pilihan jawaban',
+    'singular' => 'pilihan jawaban',
 
     'option' => 'pilihan jawaban',
     'weight' => 'bobot',

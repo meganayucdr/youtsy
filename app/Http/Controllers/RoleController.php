@@ -126,6 +126,10 @@ class RoleController extends Controller
             ->paginate()->appends(request()->query());
         $this->authorize('index', 'App\Role');
 
+        $role = new Role();
+
+//        dd($role->users());
+
         return response()->view('roles.index', [
             'roles' => $roles,
             'relations' => self::relations(request()),

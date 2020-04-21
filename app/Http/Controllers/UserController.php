@@ -54,7 +54,7 @@ class UserController extends Controller
                     //[ 'name' => 'parent', 'label' => ucwords(__('users.parent')), 'column' => 'name' ], // Only support belongsTo, hasOne
                     [ 'name' => 'name', 'label' => ucwords(__('users.name')) ],
                     [ 'name' => 'email', 'label' => ucwords(__('users.email')) ],
-                    [ 'name' => 'role', 'label' => ucwords(__('users.role')), 'column' => 'role_id' ],
+                    [ 'name' => 'role', 'label' => ucwords(__('users.role')), 'column' => 'roles.role' ],
                 ]
             ]
         ];
@@ -78,6 +78,9 @@ class UserController extends Controller
                     [ 'field' => 'input', 'type' => 'email', 'name' => 'email', 'label' => ucwords(__('users.email')), 'required' => true ],
                     [ 'field' => 'input', 'type' => 'password', 'name' => 'password', 'label' => ucwords(__('users.password')), 'required' => true ],
                     [ 'field' => 'input', 'type' => 'password', 'name' => 'password_confirmation', 'label' => ucwords(__('users.password_confirmation')), 'required' => true ],
+                    [ 'field' => 'select', 'name' => 'role_id', 'label' => ucwords(__('users.role')), 'required' => true, 'options' => \App\Role::filter()->get()->map(function ($parent) {
+                        return [ 'value' => $parent->id, 'text' => $parent->role ];
+                    })->prepend([ 'value' => '', 'text' => '-' ])->toArray() ],
                 ]
             ],
             'edit' => [

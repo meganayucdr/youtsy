@@ -10,5 +10,10 @@ use App\HollandTest;
  */
 class HollandTestPolicy extends ModelPolicy
 {
-    
+    public function showTest(User $user)
+    {
+        $allow = true;
+        return $allow;
+    }
+
 }

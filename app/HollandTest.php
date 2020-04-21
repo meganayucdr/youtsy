@@ -49,4 +49,8 @@ class HollandTest extends Model
     public function hollandTestDetails()    {
         return $this->hasMany('App\HollandTestDetail');
     }
+
+    public function UserScore()    {
+        return $this->hasOne('App\UserScore');
+    }
 }

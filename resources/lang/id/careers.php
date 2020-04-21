@@ -8,6 +8,6 @@ return [
     'name' => 'nama',
 
     //'parent' => 'parent',
-    'holland_codes' => 'holland_codes',
+    'holland_codes' => 'kode holland',
 
 ];

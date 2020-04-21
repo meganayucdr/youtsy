@@ -19,6 +19,7 @@ class CareerController extends Controller
      */
     public static function relations(Request $request = null, Career $career = null)
     {
+
         return [
             'career' => [
                 'belongsToMany' => [
@@ -52,7 +53,7 @@ class CareerController extends Controller
             'show' => [
                 'career' => [
                     //[ 'name' => 'parent', 'label' => ucwords(__('careers.parent')), 'column' => 'name' ], // Only support belongsTo, hasOne
-                    [ 'name' => 'name', 'label' => ucwords(__('careers.name')) ],
+                    [ 'name' => 'name', 'label' => ucwords(__('careers.name')) ]
                 ]
             ]
         ];
@@ -206,11 +207,7 @@ class CareerController extends Controller
     {
         $this->authorize('view', $career);
 
-        return response()->view('careers.show', [
-            'career' => $career,
-            'relations' => self::relations(request(), $career),
-            'visibles' => self::visibles(request(), $career)['show'],
-        ]);
+        return redirect(route('careers.holland_codes.index', $career->id));
     }
 
     /**

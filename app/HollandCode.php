@@ -49,4 +49,8 @@ class HollandCode extends Model
     public function questions()  {
         return $this->hasMany('App\Question');
     }
+
+    public function userScoreDetails()  {
+        return $this->hasMany('App\UserScoreDetail');
+    }
 }

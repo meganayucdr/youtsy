@@ -50,7 +50,7 @@ class OptionController extends Controller
             'show' => [
                 'option' => [
                     //[ 'name' => 'parent', 'label' => ucwords(__('options.parent')), 'column' => 'name' ], // Only support belongsTo, hasOne
-                    [ 'name' => 'name', 'label' => ucwords(__('options.name')) ],
+                    [ 'name' => 'option', 'label' => ucwords(__('options.option')) ],
                     [ 'name' => 'weight', 'label' => ucwords(__('options.weight')) ],
                 ]
             ]

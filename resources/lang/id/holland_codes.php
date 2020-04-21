@@ -9,6 +9,7 @@ return [
     'code' => 'kode',
     'explanation' => 'keterangan',
     //'parent' => 'parent',
-    'careers' => 'careers',
+    'careers' => 'karir',
+    'questions' => 'pertanyaan',
 
 ];
